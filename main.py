@@ -7,7 +7,6 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 
 app = FastAPI()
 
-# Настройки базы данных
 DATABASE_URL = "sqlite:///./library.db"
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -80,3 +79,6 @@ def delete_book(book_id: UUID):
     if db_book is None:
         raise HTTPException(status_code=404, detail="Book not found")
     db.delete(db_book)
+    db.commit()
+
+    return {"message": "Book successfully deleted"}
